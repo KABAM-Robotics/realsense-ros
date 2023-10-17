@@ -1,39 +1,16 @@
-FROM ros:melodic-perception-bionic
+FROM ros:noetic-perception
 
-ENV ROS_DISTRO melodic
+ENV ROS_DISTRO noetic
 
 RUN apt-get -q -qq update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   software-properties-common \
-  wget \
-  python-rosinstall \
-  python-catkin-tools \
-  ros-melodic-jsk-tools \
-  ros-melodic-image-transport-plugins \
-  ros-melodic-image-transport \
-  ros-melodic-ddynamic-reconfigure \
-  libusb-1.0-0-dev \
-  libglfw3-dev \
-  libgl1-mesa-dev \
-  libglu1-mesa-dev \
-  libssl-dev \
-  libusb-1.0-0-dev \
-  pkg-config \
-  libgtk-3-dev \
+  ros-noetic-realsense2-camera \
+  ros-noetic-realsense2-description \
   && \
-  apt-get install -y ros-melodic-rgbd-launch && \
+  apt-get install -y ros-noetic-rgbd-launch && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
-
-
-
-WORKDIR /home/3rdparty/librealsense
-RUN git clone https://github.com/IntelRealSense/librealsense.git . && \
-    git checkout v2.51.1 && mkdir build && cd build && \
-    cmake ../ -DBUILD_EXAMPLES=false -DFORCE_LIBUVC=true -DBUILD_WITH_CUDA=false -DCMAKE_BUILD_TYPE=release -DBUILD_PYTHON_BINDINGS=bool:true && \
-    make -j8 && \
-    make install && \
-    rm -rf /home/3rdparty/librealsense
 
 WORKDIR /home/catkin_ws
 
